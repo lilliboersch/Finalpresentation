@@ -49,6 +49,10 @@ def modify_task(tasks):
     else:
         print("Invalid task number.")
 
+# New function to sort tasks by their due date
+def sort_tasks(tasks):
+    return sorted(tasks, key=lambda task: task['due_date'])
+
 def main():
     tasks = load_tasks()  # Load tasks from file
 
@@ -79,4 +83,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
