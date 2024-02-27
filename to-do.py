@@ -29,7 +29,6 @@ def add_task(tasks):
     tasks.append({"description": task_description, "priority": priority, "due_date": due_date})
     print("Task added.")
 
-
 def remove_task(tasks):
     task_index = int(input("Enter the task number to remove: ")) - 1
     if 0 <= task_index < len(tasks):
