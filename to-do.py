@@ -1,5 +1,4 @@
 import json
-from datetime import datetime
 
 def load_tasks():
     try:
