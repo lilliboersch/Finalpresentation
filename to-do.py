@@ -1,5 +1,5 @@
 import json
-
+from datetime import datetime
 def load_tasks():
     try:
         with open("tasks.json", "r") as f:
@@ -14,9 +14,21 @@ def save_tasks(tasks):
 def add_task(tasks):
     task_description = input("Enter the task description: ")
     priority = input("Enter the task priority (High, Medium, Low): ")
-    due_date = input("Enter the due date (YYYY-MM-DD): ")
+
+    valid_date = False
+    due_date = ""
+    while not valid_date:
+        due_date_input = input("Enter the due date (YYYY-MM-DD): ")
+        try:
+            datetime.strptime(due_date_input, "%Y-%m-%d")
+            valid_date = True
+            due_date = due_date_input
+        except ValueError:
+            print("Invalid date format. Please enter the date in YYYY-MM-DD format.")
+
     tasks.append({"description": task_description, "priority": priority, "due_date": due_date})
     print("Task added.")
+
 
 def remove_task(tasks):
     task_index = int(input("Enter the task number to remove: ")) - 1
@@ -36,18 +48,28 @@ def modify_task(tasks):
     if 0 <= task_index < len(tasks):
         new_description = input("Enter the new description (leave blank to keep current): ")
         new_priority = input("Enter the new priority (High, Medium, Low; leave blank to keep current): ")
-        new_due_date = input("Enter the new due date (YYYY-MM-DD; leave blank to keep current): ")
+
+        valid_date = False
+        new_due_date = tasks[task_index]["due_date"]  # Default to current due date
+        while not valid_date:
+            due_date_input = input("Enter the new due date (YYYY-MM-DD; leave blank to keep current): ")
+            if due_date_input:
+                try:
+                    datetime.strptime(due_date_input, "%Y-%m-%d")
+                    valid_date = True
+                    new_due_date = due_date_input
+                except ValueError:
+                    print("Invalid date format. Please enter the date in YYYY-MM-DD format.")
+            else:
+                valid_date = True  # Skip date validation if the user wants to keep the current date
 
         if new_description:
             tasks[task_index]["description"] = new_description
         if new_priority:
             tasks[task_index]["priority"] = new_priority
-        if new_due_date:
-            tasks[task_index]["due_date"] = new_due_date
+        tasks[task_index]["due_date"] = new_due_date
 
         print("Task modified.")
-    else:
-        print("Invalid task number.")
 
 # New function to sort tasks by their due date
 def sort_tasks(tasks):
